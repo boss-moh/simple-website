@@ -4,7 +4,6 @@ export const TextArea = React.forwardRef(
   (
     {
       id,
-      type,
       label = "",
       labelClass = "",
       startIcon = "",
@@ -46,7 +45,6 @@ export const TextArea = React.forwardRef(
               ActiveClasses.input
             } ${startIcon ? "pl-[40px]" : ""}`}
             id={id}
-            type={type}
             ref={ref}
             {...rest}></textarea>
           {startIcon && (

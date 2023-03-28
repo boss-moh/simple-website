@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API, Auth } from "../../util";
 import { Input, List, Page, AddForm, Button, Modal } from "../../components";
@@ -14,17 +14,19 @@ export function Home() {
     }
   }, []);
 
+  const optionsModal = useToggle();
+
   const user = Auth.getUser();
 
   const { data: response, isError, isLoading, usefetch } = useFetch();
   useEffect(() => {
-    async function run() {
-      return usefetch(API.getPosts(), API.getOptionsWithTaken());
-    }
-    run();
+    usefetch(API.getPosts("0", "1"));
   }, []);
 
-  const optionsModal = useToggle();
+  const [search, setSearch] = useState("");
+  const searchPosts = response.data?.posts.filter((post) =>
+    post.text.toUpperCase().includes(search.toUpperCase())
+  );
 
   return (
     <Page className="sm:p-6">
@@ -36,7 +38,7 @@ export function Home() {
         </div>
         <Input
           className="w-full sm:w-fit sm:flex-grow"
-          onBlur={() => console.log("onBlur")}
+          onChange={(e) => setSearch(e.target.value)}
           endIcon={<SearchIcon className="w-4 h-4 fill-slate-400" />}
         />
       </header>
@@ -44,11 +46,13 @@ export function Home() {
       <main className="my-auto mt-10">
         <List
           onAddPost={optionsModal.open}
-          list={response.data?.posts || []}
+          list={searchPosts || []}
           isLoading={isLoading}
+          hasPosts={response.data?.posts.length}
+          search={search}
         />
         <Modal {...optionsModal}>
-          <AddForm>
+          <AddForm close={optionsModal.close}>
             <div className="flex gap-2">
               <Button
                 onClick={optionsModal.close}

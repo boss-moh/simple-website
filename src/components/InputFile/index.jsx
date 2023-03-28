@@ -28,7 +28,10 @@ export const InputFile = React.forwardRef(
               </p>
             </div>
           ) : (
-            <Image src={getImage(path)} />
+            <Image
+              src={getImage(path)}
+              className="m-auto"
+            />
           )}
         </div>
       </label>

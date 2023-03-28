@@ -1,6 +1,13 @@
 import React from "react";
-import { ButtonIcon, Image } from "../../../components";
-import { OptionsIcon, ShareIcon, ImageNotFoundIcon } from "../../../images";
+import { ButtonIcon, Image, CustemMenu, Button } from "../../../components";
+import { useToggle } from "../../../hooks";
+import {
+  OptionsIcon,
+  ShareIcon,
+  ImageNotFoundIcon,
+  EditIcon,
+  DeleteIcon,
+} from "../../../images";
 
 export function Item({ post }) {
   const havePermsion = true;
@@ -36,9 +43,31 @@ export function Item({ post }) {
         </ButtonIcon>
 
         {havePermsion && (
-          <ButtonIcon onClick={onShareClick}>
+          <>
+            {/* <ButtonIcon onClick={onShareClick}>
             <OptionsIcon className="w-6 h-6 text-blue-400" />
-          </ButtonIcon>
+          </ButtonIcon> */}
+            <CustemMenu
+              className=" translate-x-[85%] md:translate-x-0 "
+              button={<OptionsIcon className="w-6 h-6 text-blue-400 " />}
+              buttonClassName="!rounded-full !px-2 !py-2 hover:bg-gray-400 bg-transparent">
+              <Button
+                theme="second"
+                className="flex items- border-none group">
+                <EditIcon className="mr-2 h-5 w-5 text-white stroke-blue-400 group-hover:stroke-white " />
+                <span>Edit</span>
+              </Button>
+              <Button
+                theme="second"
+                className="flex items-center border-none group">
+                <DeleteIcon
+                  className="mr-2 h-5 w-5 text-white  stroke-blue-400 group-hover:stroke-white
+ "
+                />
+                <span>Delete</span>
+              </Button>
+            </CustemMenu>
+          </>
         )}
       </div>
     </div>

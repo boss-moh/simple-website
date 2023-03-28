@@ -29,18 +29,20 @@ export function Login() {
 
   async function onSubmit() {
     const result = await usefetch(
-      API.login(),
-      API.loginRequest(JSON.stringify(getValues()))
+      API.login,
+      "POST",
+      JSON.stringify(getValues())
     );
-    if (result.data.status == "failed") {
-      setContent(<Error message={result.data.message} />);
+    if (result.response.status == "failed") {
+      setContent(<Error message={result.response.message} />);
     } else {
-      Auth.setUser(result.data.data);
+      console.log(result);
+      Auth.setUser(result.response.data);
       setContent(
         <>
           <Success
             title="Welcome To Our WebSite"
-            message={result.data.message}
+            message={result.response.message}
           />
           <div className="my-2">
             <Button

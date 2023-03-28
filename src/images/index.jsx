@@ -10,3 +10,5 @@ export * from "./ShareIcon";
 export * from "./OptionsIcon";
 export * from "./ImageNotFound";
 export * from "./CloudIcon";
+export * from "./EditIcon";
+export * from "./DeleteIcon";

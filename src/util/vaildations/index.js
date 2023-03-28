@@ -6,18 +6,21 @@ const VAILTIOND_RULS = {
 
 export const VAILTIOND_FORM = {
   NAME: {
-    requried: "This feild requried",
+    required: "This feild requried",
     pattern: {
       value: VAILTIOND_RULS.isName,
       message: "This feild should be number",
     },
   },
   EMAIL: {
-    requried: "This feild requried",
+    required: "This feild requried",
     pattern: {
       value: VAILTIOND_RULS.isEmail,
       message: "This feild should be Email",
     },
+  },
+  TEXT: {
+    required: "This feild requried",
   },
 };
 
