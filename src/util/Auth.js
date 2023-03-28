@@ -18,7 +18,7 @@ function isLogin() {
 }
 
 function getToken() {
-  return getUser()?.accessToken;
+  return getUser()?.accessToken || "";
 }
 
 export const Auth = {

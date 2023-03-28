@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { API, Auth } from "../../util";
-import { Input, List, Page, AddForm, Button } from "../../components";
+import { Input, List, Page, AddForm, Button, Modal } from "../../components";
 import { Logo, PersonIcon, SearchIcon } from "../../images";
-import { useFetch, useMessage } from "../../hooks";
+import { useFetch, useToggle } from "../../hooks";
 
 export function Home() {
   const navigate = useNavigate();
@@ -24,10 +24,7 @@ export function Home() {
     run();
   }, []);
 
-  const { message, setIsShow } = useMessage({
-    children: <AddForm />,
-    classButtons: "",
-  });
+  const optionsModal = useToggle();
 
   return (
     <Page className="sm:p-6">
@@ -46,11 +43,22 @@ export function Home() {
 
       <main className="my-auto mt-10">
         <List
-          onAddPost={() => setIsShow(true)}
+          onAddPost={optionsModal.open}
           list={response.data?.posts || []}
           isLoading={isLoading}
         />
-        {message}
+        <Modal {...optionsModal}>
+          <AddForm>
+            <div className="flex gap-2">
+              <Button
+                onClick={optionsModal.close}
+                type="button">
+                Cancel
+              </Button>
+              <Button theme="second">Add Post</Button>
+            </div>
+          </AddForm>
+        </Modal>
       </main>
     </Page>
   );

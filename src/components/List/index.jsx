@@ -1,6 +1,6 @@
 import React from "react";
 import { PlusIcon } from "../../images";
-import { Loading, ButtonIcon } from "../../components";
+import { Loading, ButtonIcon, Button } from "../../components";
 import { Item } from "./Item";
 import { getID } from "../../util";
 
@@ -20,7 +20,10 @@ export function List({ className = "", onAddPost, list, isLoading }) {
         {isLoading ? (
           [1, 2, 3].map((item) => <Loading key={item} />)
         ) : !list.length ? (
-          <div>you don't have any post</div>
+          <div>
+            <p>you don't have any post</p>
+            <Button className="capitalize">Make frist your Post</Button>
+          </div>
         ) : (
           <div className="list flex flex-col  gap-4">
             {list.map((post) => (

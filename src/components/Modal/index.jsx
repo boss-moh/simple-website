@@ -43,8 +43,9 @@ export function Modal({ title, isOpen, close, children }) {
                   </Dialog.Title>
                 )}
                 <ButtonIcon
-                  className="absolute top-5 right-3"
-                  onClick={close}>
+                  className="absolute top-4 right-3"
+                  onClick={close}
+                  tabIndex={-1}>
                   <CloseIcon />
                 </ButtonIcon>
 

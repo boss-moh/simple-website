@@ -7,10 +7,10 @@ export function AddForm({ children }) {
   watch("image");
 
   async function onSubmit() {
-    console.log(getValues());
+    console.log("submit", getValues());
   }
   return (
-    <div>
+    <>
       <h3 className="text-xl font-semibold">Add Post</h3>
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -20,8 +20,9 @@ export function AddForm({ children }) {
           {...register("image")}
           path={getValues()?.image?.[0]}
         />
+        {children}
       </form>
-    </div>
+    </>
   );
 }
 
