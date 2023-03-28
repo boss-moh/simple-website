@@ -9,15 +9,17 @@ export function CustemMenu({
 }) {
   function getChildren(items) {
     if (Array.isArray(items)) {
-      return items.map((item) => getItem(item));
+      return items.map((item, index) => getItem(item, index));
     } else {
       return getItem(items);
     }
   }
 
-  function getItem(item) {
+  function getItem(item, index = "0") {
     return (
-      <div className="px-1 py-1 ">
+      <div
+        className="px-1 py-1 "
+        key={index}>
         <Menu.Item>{item}</Menu.Item>
       </div>
     );

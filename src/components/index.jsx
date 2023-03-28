@@ -12,4 +12,4 @@ export * from "./TextArea";
 export * from "./AddForm";
 export * from "./InputFile";
 export * from "./Modal";
-export * from "./Menu";
+export * from "./CustemMenu";

@@ -52,16 +52,7 @@ export function Home() {
           search={search}
         />
         <Modal {...optionsModal}>
-          <AddForm close={optionsModal.close}>
-            <div className="flex gap-2">
-              <Button
-                onClick={optionsModal.close}
-                type="button">
-                Cancel
-              </Button>
-              <Button theme="second">Add Post</Button>
-            </div>
-          </AddForm>
+          <AddForm close={optionsModal.close} />
         </Modal>
       </main>
     </Page>

@@ -15,7 +15,6 @@ export function LoadingIcon(props) {
         cy="50"
         r="32"
         strokeWidth="8"
-        stroke={props.stroke || "white"}
         strokeDasharray="50.26548245743669 50.26548245743669"
         fill="currentColor"
         strokeLinecap="round"></circle>

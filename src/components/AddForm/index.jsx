@@ -10,9 +10,10 @@ import {
   Input,
 } from "../../components";
 import { useFetch, useToggle } from "../../hooks";
+import { LoadingIcon } from "../../images";
 import { API, VAILTIOND_FORM } from "../../util";
 
-export function AddForm({ children, close }) {
+export function AddForm({ close }) {
   const {
     register,
     handleSubmit,
@@ -24,7 +25,7 @@ export function AddForm({ children, close }) {
 
   const modalOptions = useToggle();
   const [content, setContent] = useState(null);
-  const { usefetch } = useFetch();
+  const { isLoading, usefetch } = useFetch();
 
   function prepareData(data) {
     const formData = new FormData();
@@ -68,7 +69,26 @@ export function AddForm({ children, close }) {
           {...register("image")}
           path={getValues()?.image?.[0]}
         />
-        {children}
+        <div className="flex gap-2">
+          <Button
+            onClick={close}
+            type="button">
+            Cancel
+          </Button>
+
+          <Button
+            theme="second"
+            className="flex items-center justify-center group">
+            {isLoading ? (
+              <>
+                <LoadingIcon className=" text-transparent animate-spin w-8 h-8   stroke-blue-500 group-hover:stroke-white" />
+                <p className="ml-[10px]">Loading . . .</p>
+              </>
+            ) : (
+              "Add Post"
+            )}
+          </Button>
+        </div>
       </form>
       <Modal
         {...modalOptions}
