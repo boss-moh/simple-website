@@ -3,13 +3,11 @@ import { CloudIcon } from "../../images";
 import Image from "../Image";
 
 export const InputFile = React.forwardRef(
-  ({ className = "", path = "", ...rest }, ref) => {
-    function getImage(path) {
-      return URL.createObjectURL(path);
-    }
-    const activeClass = !path
-      ? " border border-gray-400 border-dashed "
-      : " border-2  bg-green-100 border-green-600  ";
+  ({ className = "", getSrcImage, ...rest }, ref) => {
+    const hasImage = !!getSrcImage();
+    const activeClass = hasImage
+      ? " border-2  bg-green-100 border-green-600  "
+      : " border border-gray-400 border-dashed ";
     return (
       <label>
         <input
@@ -19,7 +17,7 @@ export const InputFile = React.forwardRef(
           {...rest}
         />
         <div className={`  px-2 py-4 gap-5${className} ${activeClass}`}>
-          {!path ? (
+          {!hasImage ? (
             <div className="flex flex-col justify-center items-center text-center">
               <p className="font-semibold"> Upload your image</p>
               <CloudIcon className="w-20 h-20 " />
@@ -29,7 +27,7 @@ export const InputFile = React.forwardRef(
             </div>
           ) : (
             <Image
-              src={getImage(path)}
+              src={getSrcImage()}
               className="m-auto"
             />
           )}

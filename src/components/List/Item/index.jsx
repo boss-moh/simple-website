@@ -1,5 +1,15 @@
 import React from "react";
-import { ButtonIcon, Image, CustemMenu, Button } from "../../../components";
+import { useState } from "react";
+import {
+  ButtonIcon,
+  Image,
+  CustemMenu,
+  Button,
+  Modal,
+  EditForm,
+  DeleteForm,
+} from "../../../components";
+import { useFetch, useToggle } from "../../../hooks";
 import {
   OptionsIcon,
   ShareIcon,
@@ -7,12 +17,37 @@ import {
   EditIcon,
   DeleteIcon,
 } from "../../../images";
+import ShareForm from "../../ShareForm";
 
-export function Item({ post }) {
-  const havePermsion = true;
+export function Item({ user, post }) {
+  const hasPermsion = post.user._id == user.data._id;
+
+  const modalOptions = useToggle();
+  const sharemodalOptions = useToggle();
+  const [content, setContent] = useState();
 
   function onShareClick() {
-    console.log("onShareClick");
+    sharemodalOptions.open();
+  }
+
+  function handleEdit() {
+    setContent(
+      <EditForm
+        close={modalOptions.close}
+        post={post}
+      />
+    );
+    modalOptions.open();
+  }
+
+  function handleDelete() {
+    setContent(
+      <DeleteForm
+        post={post}
+        close={modalOptions.close}
+      />
+    );
+    modalOptions.open();
   }
 
   return (
@@ -37,26 +72,24 @@ export function Item({ post }) {
       <div
         className="flex justify-between w-full
       p-2 self-stretch flex-row-reverse  sm:w-fit sm:flex-col  ">
-        <ButtonIcon onClick={onShareClick}>
-          <ShareIcon className="w-6 h-6" />
-        </ButtonIcon>
-
-        {havePermsion && (
+        {hasPermsion && (
           <>
-            {/* <ButtonIcon onClick={onShareClick}>
-            <OptionsIcon className="w-6 h-6 text-blue-400" />
-          </ButtonIcon> */}
+            <ButtonIcon onClick={onShareClick}>
+              <ShareIcon className="w-6 h-6" />
+            </ButtonIcon>
             <CustemMenu
               className=" translate-x-[85%] sm:translate-x-0 "
               button={<OptionsIcon className="w-6 h-6 text-blue-400 " />}
               buttonClassName="!rounded-full !px-2 !py-2 hover:bg-gray-400 bg-transparent">
               <Button
+                onClick={handleEdit}
                 theme="second"
                 className="flex items- border-none group">
                 <EditIcon className="mr-2 h-5 w-5 text-white stroke-blue-400 group-hover:stroke-white " />
                 <span>Edit</span>
               </Button>
               <Button
+                onClick={handleDelete}
                 theme="second"
                 className="flex items-center border-none group">
                 <DeleteIcon
@@ -66,6 +99,13 @@ export function Item({ post }) {
                 <span>Delete</span>
               </Button>
             </CustemMenu>
+            <Modal {...modalOptions}>{content}</Modal>
+            <Modal {...sharemodalOptions}>
+              <ShareForm
+                close={sharemodalOptions.close}
+                post={post}
+              />
+            </Modal>
           </>
         )}
       </div>

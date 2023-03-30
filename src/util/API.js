@@ -10,6 +10,10 @@ export const API = {
   login: `${API_URL}/auth/login`,
   getPosts,
   addPost: `${API_URL}/post/add`,
+  postDetails: (id) => `${API_URL}/post/details/${id}`,
+  updataPost: (id) => `${API_URL}/post/update/${id}`,
+  deletePost: (id) => `${API_URL}/post/delete/${id}`,
+  sharePost: (id) => `${API_URL}/post/share/${id}`,
 };
 
 export default API;

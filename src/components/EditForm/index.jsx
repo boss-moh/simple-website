@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   TextArea,
@@ -12,16 +12,22 @@ import { useFetch, useToggle } from "../../hooks";
 import { LoadingIcon } from "../../images";
 import { API, VAILTIOND_FORM } from "../../util";
 
-export function AddForm({ close }) {
+export function EditForm({ post, close }) {
   const {
     register,
     handleSubmit,
     formState: { errors },
     getValues,
+    setValue,
     watch,
-  } = useForm();
-  watch("image");
+  } = useForm({
+    defaultValues: {
+      text: post.text,
+      image: post.image || null,
+    },
+  });
 
+  watch("image");
   const modalOptions = useToggle();
   const [content, setContent] = useState(null);
   const { isLoading, usefetch } = useFetch();
@@ -29,14 +35,20 @@ export function AddForm({ close }) {
   function prepareData(data) {
     const formData = new FormData();
     formData.append("text", data.text);
-    formData.append("image", data.image[0]);
+
+    const image = data?.image?.[0];
+    if (typeof image == "object") {
+      formData.append("image", image);
+    }
+
     return formData;
   }
   async function onSubmit() {
+    console.log("getValues", getValues());
     const dataRequest = prepareData(getValues());
     const result = await usefetch(
-      API.addPost,
-      "POST",
+      API.updataPost(post._id),
+      "PUT",
       dataRequest,
       "multipart/form-data;"
     );
@@ -45,7 +57,7 @@ export function AddForm({ close }) {
     } else {
       setContent(
         <Success
-          title="Added Post"
+          title="Edit Post"
           message={result.response.message}
         />
       );
@@ -59,13 +71,18 @@ export function AddForm({ close }) {
   }
 
   function handleGetSrcImage() {
-    const path = getValues()?.image?.[0] || null;
-    return path && URL.createObjectURL(path);
+    const path = getValues()?.image;
+    if (typeof path == "string") return path;
+    else if (typeof path == "object") {
+      return URL.createObjectURL(path?.[0] || null);
+    } else {
+      return "";
+    }
   }
 
   return (
     <>
-      <h3 className="text-xl font-semibold">Add Post</h3>
+      <h3 className="text-xl font-semibold">Edit Post</h3>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-4">
@@ -84,17 +101,16 @@ export function AddForm({ close }) {
             type="button">
             Cancel
           </Button>
-
           <Button
             theme="second"
-            className="flex items-center justify-center group">
+            className="flex items-center justify-center group whitespace-nowrap">
             {isLoading ? (
               <>
                 <LoadingIcon className=" text-transparent animate-spin w-8 h-8   stroke-blue-500 group-hover:stroke-white" />
                 <p className="ml-[10px]">Loading . . .</p>
               </>
             ) : (
-              "Add Post"
+              "Edit Post"
             )}
           </Button>
         </div>
@@ -108,4 +124,4 @@ export function AddForm({ close }) {
   );
 }
 
-export default AddForm;
+export default EditForm;

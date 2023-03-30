@@ -20,12 +20,16 @@ function isLogin() {
 function getToken() {
   return getUser()?.accessToken || "";
 }
+function logOut() {
+  localStorage.removeItem("user");
+}
 
 export const Auth = {
   getUser,
   setUser,
   isLogin,
   getToken,
+  logOut,
 };
 
 export default Auth;

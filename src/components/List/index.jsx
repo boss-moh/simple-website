@@ -4,6 +4,7 @@ import { Loading, ButtonIcon, Button } from "../../components";
 import { Item } from "./Item";
 
 export function List({
+  user,
   className = "",
   onAddPost,
   list,
@@ -42,6 +43,7 @@ export function List({
           <div className="list flex flex-col  gap-4">
             {list.map((post) => (
               <Item
+                user={user}
                 post={post}
                 key={post._id}
               />

@@ -11,10 +11,12 @@ export function useFetch() {
     data = "",
     type = "application/json"
   ) {
+    const token = Auth.getToken();
     const options = {
       method,
       headers: {
-        Authorization: `Bearer ${Auth.getToken()}`,
+        "Content-Type": type,
+        Authorization: `Bearer ${token}`,
       },
     };
 

@@ -1,18 +1,12 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import {
-  TextArea,
-  InputFile,
-  Button,
-  Modal,
-  Success,
-  Error,
-} from "../../components";
+import { Button, Modal, Success, Error, Input } from "../../components";
 import { useFetch, useToggle } from "../../hooks";
 import { LoadingIcon } from "../../images";
 import { API, VAILTIOND_FORM } from "../../util";
+import { Radio } from "../Radio";
 
-export function AddForm({ close }) {
+export function ShareForm({ post, close }) {
   const {
     register,
     handleSubmit,
@@ -20,32 +14,21 @@ export function AddForm({ close }) {
     getValues,
     watch,
   } = useForm();
-  watch("image");
 
   const modalOptions = useToggle();
   const [content, setContent] = useState(null);
   const { isLoading, usefetch } = useFetch();
 
-  function prepareData(data) {
-    const formData = new FormData();
-    formData.append("text", data.text);
-    formData.append("image", data.image[0]);
-    return formData;
-  }
   async function onSubmit() {
-    const dataRequest = prepareData(getValues());
-    const result = await usefetch(
-      API.addPost,
-      "POST",
-      dataRequest,
-      "multipart/form-data;"
-    );
+    console.log("request start");
+    const dataRequest = JSON.stringify(getValues());
+    const result = await usefetch(API.sharePost(post._id), "POST", dataRequest);
     if (result.response.status == "failed") {
       setContent(<Error message={result.response.message} />);
     } else {
       setContent(
         <Success
-          title="Added Post"
+          title="Share Post"
           message={result.response.message}
         />
       );
@@ -58,26 +41,31 @@ export function AddForm({ close }) {
     modalOptions.close();
   }
 
-  function handleGetSrcImage() {
-    const path = getValues()?.image?.[0] || null;
-    return path && URL.createObjectURL(path);
-  }
-
   return (
     <>
-      <h3 className="text-xl font-semibold">Add Post</h3>
+      <h3 className="text-xl font-semibold">Share Post</h3>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-4">
-        <TextArea
-          {...register("text", VAILTIOND_FORM.TEXT)}
+        <Input
+          label="email"
+          {...register("email", VAILTIOND_FORM.EMAIL)}
           error={errors?.text}
           helperText={errors?.text?.message}
         />
-        <InputFile
-          {...register("image")}
-          getSrcImage={handleGetSrcImage}
+        <Radio
+          {...register("view")}
+          id="only View"
+          label="only View"
+          value="read"
         />
+        <Radio
+          {...register("view")}
+          id="View and Edit"
+          label="View and Edit"
+          value="write"
+        />
+
         <div className="flex gap-2 flex-col-reverse sm:flex-row">
           <Button
             onClick={close}
@@ -87,14 +75,15 @@ export function AddForm({ close }) {
 
           <Button
             theme="second"
-            className="flex items-center justify-center group">
+            className="flex items-center justify-center group"
+            type="submit">
             {isLoading ? (
               <>
                 <LoadingIcon className=" text-transparent animate-spin w-8 h-8   stroke-blue-500 group-hover:stroke-white" />
                 <p className="ml-[10px]">Loading . . .</p>
               </>
             ) : (
-              "Add Post"
+              "Share Post"
             )}
           </Button>
         </div>
@@ -108,4 +97,4 @@ export function AddForm({ close }) {
   );
 }
 
-export default AddForm;
+export default ShareForm;

@@ -85,7 +85,7 @@ export function SignUp() {
           <Button className="flex justify-center items-center">
             {isLoading ? (
               <>
-                <LoadingIcon className=" text-transparent animate-spin w-8 h-8   stroke-blue-500" />
+                <LoadingIcon className=" text-transparent animate-spin w-8 h-8   stroke-white" />
                 <p className="ml-[10px]">Loading . . .</p>
               </>
             ) : (

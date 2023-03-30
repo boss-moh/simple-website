@@ -12,3 +12,6 @@ export * from "./ImageNotFound";
 export * from "./CloudIcon";
 export * from "./EditIcon";
 export * from "./DeleteIcon";
+export * from "./ArrowIcon";
+export * from "./DoorIcon";
+export * from "./OpenDoorIcon";
