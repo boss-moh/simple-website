@@ -1,8 +1,14 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Button, Modal, Success, Error, Input } from "../../components";
+import {
+  Button,
+  Modal,
+  Success,
+  Error,
+  Input,
+  Loading,
+} from "../../components";
 import { useFetch, useToggle } from "../../hooks";
-import { LoadingIcon } from "../../images";
 import { API, VAILTIOND_FORM } from "../../util";
 import { Radio } from "../Radio";
 
@@ -20,17 +26,13 @@ export function ShareForm({ post, close }) {
   const { isLoading, usefetch } = useFetch();
 
   async function onSubmit() {
-    console.log("request start");
     const dataRequest = JSON.stringify(getValues());
     const result = await usefetch(API.sharePost(post._id), "POST", dataRequest);
     if (result.response.status == "failed") {
       setContent(<Error message={result.response.message} />);
     } else {
       setContent(
-        <Success
-          title="Share Post"
-          message={result.response.message}
-        />
+        <Success title="Share Post" message={result.response.message} />
       );
     }
     modalOptions.open();
@@ -44,9 +46,7 @@ export function ShareForm({ post, close }) {
   return (
     <>
       <h3 className="text-xl font-semibold">Share Post</h3>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <Input
           label="email"
           {...register("email", VAILTIOND_FORM.EMAIL)}
@@ -67,20 +67,14 @@ export function ShareForm({ post, close }) {
         />
 
         <div className="flex gap-2 flex-col-reverse sm:flex-row">
-          <Button
-            onClick={close}
-            type="button">
-            Cancel
+          <Button onClick={close} type="button">
+            {isLoading ? "Close" : "Cancel"}
           </Button>
 
-          <Button
-            theme="second"
-            className="flex items-center justify-center group"
-            type="submit">
+          <Button theme="second" className=" group" type="submit">
             {isLoading ? (
               <>
-                <LoadingIcon className=" text-transparent animate-spin w-8 h-8   stroke-blue-500 group-hover:stroke-white" />
-                <p className="ml-[10px]">Loading . . .</p>
+                <Loading className=" stroke-blue-500 group-hover:stroke-white" />
               </>
             ) : (
               "Share Post"
@@ -88,9 +82,7 @@ export function ShareForm({ post, close }) {
           </Button>
         </div>
       </form>
-      <Modal
-        {...modalOptions}
-        close={handleCloseAfterSubmit}>
+      <Modal {...modalOptions} close={handleCloseAfterSubmit}>
         {content}
       </Modal>
     </>

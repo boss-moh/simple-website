@@ -9,7 +9,8 @@ export function LoadingIcon(props) {
       height="200px"
       viewBox="0 0 100 100"
       preserveAspectRatio="xMidYMid"
-      {...props}>
+      {...props}
+    >
       <circle
         cx="50"
         cy="50"
@@ -17,7 +18,8 @@ export function LoadingIcon(props) {
         strokeWidth="8"
         strokeDasharray="50.26548245743669 50.26548245743669"
         fill="currentColor"
-        strokeLinecap="round"></circle>
+        strokeLinecap="round"
+      ></circle>
     </svg>
   );
 }

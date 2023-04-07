@@ -13,17 +13,19 @@ export const Radio = React.forwardRef(
     ref
   ) => {
     return (
-      <div className={`border flex gap-2 p-2 text-lg capitalize ${className}`}>
+      <div
+        className={`border flex items-center gap-2 p-2 text-lg capitalize ${className}`}>
         <input
           type={type}
           id={id}
           {...rest}
           ref={ref}
-          className="peer"
+          className="peer hidden"
         />
+        <span className="border w-5 h-5 rounded-full peer-checked:bg-blue-400 peer-checked:border-blue-400 transition-all"></span>
         <label
           htmlFor={id}
-          className={`peer-checked:text-blue-500 ${labelClass}`}>
+          className={`peer-checked:text-blue-500 transition-all ${labelClass}`}>
           {label}
         </label>
       </div>

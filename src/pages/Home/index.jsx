@@ -53,10 +53,11 @@ export function Home() {
 
   return (
     <Page className="sm:p-6">
-      <header className="flex flex-wrap items-center justify-between  gap-4 sm:flex-row mb-10 ">
+      <header className=" mb-10 flex flex-wrap  justify-between  gap-4  items-center  sm:flex-row   ">
         <Logo className="w-16 h-16  sm:w-10 sm:h-10 " />
-        <div className=" flex flex-col items-center sm:order-10">
-          <PersonIcon className="w-8 h-8 " />
+
+        <div className=" flex flex-col items-center w-fit sm:order-10 ">
+          <PersonIcon className="w-10 h-10 " />
           <p>{user?.data?.name || "noKwon"}</p>
         </div>
 
@@ -91,13 +92,14 @@ export function Home() {
           <AddForm close={optionsModal.close} />
         </Modal>
       </main>
-
-      <Button
-        onClick={handleLogout}
-        className="bg-transparent hover:bg-transparent group fixed bottom-10 right-10 w-fit h-fit ">
-        <DoorIcon className="text-white fill-white w-14 h-14 group-hover:hidden" />
-        <OpenDoorIcon className="text-white fill-white  w-14 h-14 hidden group-hover:block" />
-      </Button>
+      <div className="fixed bottom-10 right-0   ">
+        <Button
+          onClick={handleLogout}
+          className="bg-gray-300 hover:bg-gray-300 transition-all w-fit h-fit   rounded-l-full group !pl-4 ">
+          <DoorIcon className="text-white fill-white w-16 group-hover:hidden" />
+          <OpenDoorIcon className="text-white fill-white  w-16 hidden group-hover:block" />
+        </Button>
+      </div>
     </Page>
   );
 }

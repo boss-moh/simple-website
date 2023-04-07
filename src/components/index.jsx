@@ -14,3 +14,4 @@ export * from "./InputFile";
 export * from "./Modal";
 export * from "./CustemMenu";
 export * from "./EditForm";
+export * from "./Skeleton";

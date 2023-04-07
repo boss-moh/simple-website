@@ -7,9 +7,9 @@ import {
   Modal,
   Success,
   Error,
+  Loading,
 } from "../../components";
 import { useFetch, useToggle } from "../../hooks";
-import { LoadingIcon } from "../../images";
 import { API, VAILTIOND_FORM } from "../../util";
 
 export function EditForm({ post, close }) {
@@ -18,7 +18,6 @@ export function EditForm({ post, close }) {
     handleSubmit,
     formState: { errors },
     getValues,
-    setValue,
     watch,
   } = useForm({
     defaultValues: {
@@ -56,10 +55,7 @@ export function EditForm({ post, close }) {
       setContent(<Error message={result.response.message} />);
     } else {
       setContent(
-        <Success
-          title="Edit Post"
-          message={result.response.message}
-        />
+        <Success title="Edit Post" message={result.response.message} />
       );
     }
     modalOptions.open();
@@ -83,41 +79,27 @@ export function EditForm({ post, close }) {
   return (
     <>
       <h3 className="text-xl font-semibold">Edit Post</h3>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <TextArea
           {...register("text", VAILTIOND_FORM.TEXT)}
           error={errors?.text}
           helperText={errors?.text?.message}
         />
-        <InputFile
-          {...register("image")}
-          getSrcImage={handleGetSrcImage}
-        />
+        <InputFile {...register("image")} getSrcImage={handleGetSrcImage} />
         <div className="flex gap-2 flex-col-reverse sm:flex-row">
-          <Button
-            onClick={close}
-            type="button">
+          <Button onClick={close} type="button">
             Cancel
           </Button>
-          <Button
-            theme="second"
-            className="flex items-center justify-center group whitespace-nowrap">
+          <Button theme="second" className=" group ">
             {isLoading ? (
-              <>
-                <LoadingIcon className=" text-transparent animate-spin w-8 h-8   stroke-blue-500 group-hover:stroke-white" />
-                <p className="ml-[10px]">Loading . . .</p>
-              </>
+              <Loading className=" stroke-blue-500 group-hover:stroke-white" />
             ) : (
               "Edit Post"
             )}
           </Button>
         </div>
       </form>
-      <Modal
-        {...modalOptions}
-        close={handleCloseAfterSubmit}>
+      <Modal {...modalOptions} close={handleCloseAfterSubmit}>
         {content}
       </Modal>
     </>

@@ -4,23 +4,19 @@ export function DoorIcon(props) {
   return (
     <svg
       {...props}
-      height="800px"
-      width="800px"
       version="1.1"
       id="Layer_1"
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
       viewBox="0 0 486.4 486.4"
-      xmlSpace="preserve">
-      <g
-        id="SVGRepo_bgCarrier"
-        stroke-width="0"
-      />
+      xmlSpace="preserve"
+    >
+      <g id="SVGRepo_bgCarrier" strokeWidth="0" />
 
       <g
         id="SVGRepo_tracerCarrier"
         strokeLinecap="round"
-        stroke-strokeLinejoin="round"
+        strokeLinejoin="round"
       />
 
       <g id="SVGRepo_iconCarrier">

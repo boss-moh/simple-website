@@ -78,7 +78,7 @@ export function Item({ user, post }) {
               <ShareIcon className="w-6 h-6" />
             </ButtonIcon>
             <CustemMenu
-              className=" translate-x-[85%] sm:translate-x-0 "
+              className=" translate-x-[85%] sm:translate-x-0 z-10"
               button={<OptionsIcon className="w-6 h-6 text-blue-400 " />}
               buttonClassName="!rounded-full !px-2 !py-2 hover:bg-gray-400 bg-transparent">
               <Button

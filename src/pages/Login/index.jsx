@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { LoadingIcon, Logo } from "../../images";
-import { Page, Button, Input, Success, Error, Modal } from "./../../components";
+import { Logo } from "../../images";
+import {
+  Page,
+  Button,
+  Input,
+  Success,
+  Error,
+  Modal,
+  Loading,
+} from "./../../components";
 import { useForm } from "react-hook-form";
 import { API, Auth, VAILTIOND_FORM } from "../../util";
 import { useFetch, useToggle } from "../../hooks";
@@ -36,7 +44,6 @@ export function Login() {
     if (result.response.status == "failed") {
       setContent(<Error message={result.response.message} />);
     } else {
-      console.log(result);
       Auth.setUser(result.response.data);
       setContent(
         <>
@@ -45,9 +52,7 @@ export function Login() {
             message={result.response.message}
           />
           <div className="my-2">
-            <Button
-              theme="second"
-              onClick={() => navigate("/home")}>
+            <Button theme="second" onClick={() => navigate("/home")}>
               Move To Home
             </Button>
           </div>
@@ -67,7 +72,8 @@ export function Login() {
       </div>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col my-4 gap-4 ">
+        className="flex flex-col my-4 gap-4 "
+      >
         <Input
           id={"email"}
           label="Email"
@@ -76,21 +82,15 @@ export function Login() {
           helperText={errors?.email?.message}
         />
         <div className="mt-2 flex flex-col gap-5 items-center">
-          <Button className="flex justify-center items-center">
-            {isLoading ? (
-              <>
-                <LoadingIcon className=" text-transparent animate-spin w-8 h-8   stroke-white" />
-                <p className="ml-[10px]">Loading . . .</p>
-              </>
-            ) : (
-              "Login"
-            )}
+          <Button>
+            {isLoading ? <Loading className="stroke-white" /> : "Login"}
           </Button>
           <p>
             Don't have an account?
             <Link
               to={"/signup"}
-              className="ml-1 text-blue-500 hover:cursor-pointer">
+              className="ml-1 text-blue-500 hover:cursor-pointer"
+            >
               Sign Up
             </Link>
           </p>

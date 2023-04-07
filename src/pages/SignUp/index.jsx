@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Page, Input, Button, Error, Success, Modal } from "../../components";
-import { LoadingIcon, Logo } from "../../images";
+import {
+  Page,
+  Input,
+  Button,
+  Error,
+  Success,
+  Modal,
+  Loading,
+} from "../../components";
+import { Logo } from "../../images";
 import { useForm } from "react-hook-form";
 import { VAILTIOND_FORM, API, Auth } from "../../util";
 import { useFetch, useToggle } from "../../hooks";
@@ -45,9 +53,7 @@ export function SignUp() {
             message={result.response.message}
           />
           <div className="my-2">
-            <Button
-              theme="second"
-              onClick={() => navigate("/home")}>
+            <Button theme="second" onClick={() => navigate("/home")}>
               Move To Home
             </Button>
           </div>
@@ -68,7 +74,8 @@ export function SignUp() {
       </div>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col my-4 gap-4 ">
+        className="flex flex-col my-4 gap-4 "
+      >
         <Input
           label="Name"
           {...register("name", VAILTIOND_FORM.NAME)}
@@ -82,21 +89,15 @@ export function SignUp() {
           helperText={errors?.email?.message}
         />
         <div className="mt-2 flex flex-col gap-5 items-center">
-          <Button className="flex justify-center items-center">
-            {isLoading ? (
-              <>
-                <LoadingIcon className=" text-transparent animate-spin w-8 h-8   stroke-white" />
-                <p className="ml-[10px]">Loading . . .</p>
-              </>
-            ) : (
-              "Sign Up"
-            )}
+          <Button>
+            {isLoading ? <Loading className="stroke-white" /> : "Sign Up"}
           </Button>
           <p>
             Already have an account?
             <Link
               to={"/login"}
-              className="ml-1 text-blue-500 hover:cursor-pointer">
+              className="ml-1 text-blue-500 hover:cursor-pointer"
+            >
               Login
             </Link>
           </p>
