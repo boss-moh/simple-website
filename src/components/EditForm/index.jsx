@@ -10,9 +10,9 @@ import {
   Loading,
 } from "../../components";
 import { useFetch, useToggle } from "../../hooks";
-import { API, VAILTIOND_FORM } from "../../util";
+import { API } from "../../util";
 
-export function EditForm({ post, close }) {
+export function EditForm({ post, close, CONTROLS }) {
   const {
     register,
     handleSubmit,
@@ -43,7 +43,6 @@ export function EditForm({ post, close }) {
     return formData;
   }
   async function onSubmit() {
-    console.log("getValues", getValues());
     const dataRequest = prepareData(getValues());
     const result = await usefetch(
       API.updataPost(post._id),
@@ -54,6 +53,7 @@ export function EditForm({ post, close }) {
     if (result.response.status == "failed") {
       setContent(<Error message={result.response.message} />);
     } else {
+      CONTROLS.EDIT_POST(post._id, getValues().text, handleGetSrcImage());
       setContent(
         <Success title="Edit Post" message={result.response.message} />
       );
@@ -69,7 +69,7 @@ export function EditForm({ post, close }) {
   function handleGetSrcImage() {
     const path = getValues()?.image;
     if (typeof path == "string") return path;
-    else if (typeof path == "object") {
+    else if (typeof path == "object" && path) {
       return URL.createObjectURL(path?.[0] || null);
     } else {
       return "";
@@ -80,11 +80,7 @@ export function EditForm({ post, close }) {
     <>
       <h3 className="text-xl font-semibold">Edit Post</h3>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-        <TextArea
-          {...register("text", VAILTIOND_FORM.TEXT)}
-          error={errors?.text}
-          helperText={errors?.text?.message}
-        />
+        <TextArea {...register("text")} />
         <InputFile {...register("image")} getSrcImage={handleGetSrcImage} />
         <div className="flex gap-2 flex-col-reverse sm:flex-row">
           <Button onClick={close} type="button">

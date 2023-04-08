@@ -22,11 +22,25 @@ import { useFetch, useToggle } from "../../hooks";
 
 const reducerPost = function (state, action) {
   switch (action.type) {
-    case "ADD": {
+    case "ADD_POST": {
       return { ...state, posts: [action.payLoad, ...state.posts] };
     }
     case "SET_LIST": {
       return { ...state, posts: action.payLoad };
+    }
+    case "REMOVE_POST": {
+      const newPosts = state.posts.filter(
+        (post) => post._id !== action.payLoad
+      );
+      return { ...state, posts: newPosts };
+    }
+    case "EDIT_POST": {
+      const { id, text, image } = action.payLoad;
+      const postIndex = state.posts.findIndex((post) => post._id == id);
+      text && (state.posts[postIndex].text = text);
+      image && (state.posts[postIndex].image = image);
+      console.log("text", text, "image", image);
+      return { ...state };
     }
   }
 };
@@ -58,13 +72,23 @@ export function Home() {
   console.log(state);
 
   const CONTROLS = {
-    // ADD_POST: handleAddPost,
     ADD_POST: (id, text, image) => {
       dispacth({
-        type: "ADD",
+        type: "ADD_POST",
         payLoad: {
           _id: id,
           user: Auth.getUser().data,
+          text,
+          image,
+        },
+      });
+    },
+    REMOVE_POST: (id) => dispacth({ type: "REMOVE_POST", payLoad: id }),
+    EDIT_POST: (id, text, image) => {
+      dispacth({
+        type: "EDIT_POST",
+        payLoad: {
+          id,
           text,
           image,
         },
@@ -110,6 +134,7 @@ export function Home() {
           isLoading={isLoading}
           hasPosts={state.posts.length}
           search={search}
+          CONTROLS={CONTROLS}
         />
         <div className="flex justify-center items-center">
           <ButtonIcon>
@@ -123,7 +148,7 @@ export function Home() {
           </ButtonIcon>
         </div>
         <Modal {...optionsModal}>
-          <AddForm close={optionsModal.close} controls={CONTROLS} />
+          <AddForm close={optionsModal.close} CONTROLS={CONTROLS} />
         </Modal>
       </main>
       <div className="fixed bottom-10 right-0   ">

@@ -11,6 +11,7 @@ export function List({
   isLoading,
   hasPosts = false,
   search,
+  CONTROLS,
 }) {
   return (
     <div className={` border  p-2 ${className}`}>
@@ -42,7 +43,12 @@ export function List({
         ) : (
           <div className="list flex flex-col  gap-4">
             {list.map((post) => (
-              <Item user={user} post={post} key={post._id} />
+              <Item
+                user={user}
+                post={post}
+                key={post._id}
+                CONTROLS={CONTROLS}
+              />
             ))}
           </div>
         )}

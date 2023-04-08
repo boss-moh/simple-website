@@ -12,7 +12,7 @@ import {
 import { useFetch, useToggle } from "../../hooks";
 import { API, VAILTIOND_FORM, getID } from "../../util";
 
-export function AddForm({ close, controls }) {
+export function AddForm({ close, CONTROLS }) {
   const {
     register,
     handleSubmit,
@@ -45,7 +45,7 @@ export function AddForm({ close, controls }) {
       setContent(<Error message={result.response.message} />);
     } else {
       const ID = result.response?.data?.id || getID();
-      controls.ADD_POST(ID, getValues().text, handleGetSrcImage());
+      CONTROLS.ADD_POST(ID, getValues().text, handleGetSrcImage());
       setContent(
         <Success title="Added Post" message={result.response.message} />
       );

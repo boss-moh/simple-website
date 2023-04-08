@@ -19,7 +19,7 @@ import {
 } from "../../../images";
 import ShareForm from "../../ShareForm";
 
-export function Item({ user, post }) {
+export function Item({ user, post, CONTROLS }) {
   const hasPermsion = post.user._id == user.data._id;
 
   const modalOptions = useToggle();
@@ -32,20 +32,14 @@ export function Item({ user, post }) {
 
   function handleEdit() {
     setContent(
-      <EditForm
-        close={modalOptions.close}
-        post={post}
-      />
+      <EditForm close={modalOptions.close} post={post} CONTROLS={CONTROLS} />
     );
     modalOptions.open();
   }
 
   function handleDelete() {
     setContent(
-      <DeleteForm
-        post={post}
-        close={modalOptions.close}
-      />
+      <DeleteForm post={post} close={modalOptions.close} CONTROLS={CONTROLS} />
     );
     modalOptions.open();
   }
@@ -71,7 +65,8 @@ export function Item({ user, post }) {
 
       <div
         className="flex justify-between w-full
-      p-2 self-stretch flex-row-reverse  sm:w-fit sm:flex-col  ">
+      p-2 self-stretch flex-row-reverse  sm:w-fit sm:flex-col  "
+      >
         {hasPermsion && (
           <>
             <ButtonIcon onClick={onShareClick}>
@@ -80,18 +75,21 @@ export function Item({ user, post }) {
             <CustemMenu
               className=" translate-x-[85%] sm:translate-x-0 z-10"
               button={<OptionsIcon className="w-6 h-6 text-blue-400 " />}
-              buttonClassName="!rounded-full !px-2 !py-2 hover:bg-gray-400 bg-transparent">
+              buttonClassName="!rounded-full !px-2 !py-2 hover:bg-gray-400 bg-transparent"
+            >
               <Button
                 onClick={handleEdit}
                 theme="second"
-                className="flex items- border-none group">
+                className="flex items- border-none group"
+              >
                 <EditIcon className="mr-2 h-5 w-5 text-white stroke-blue-400 group-hover:stroke-white " />
                 <span>Edit</span>
               </Button>
               <Button
                 onClick={handleDelete}
                 theme="second"
-                className="flex items-center border-none group">
+                className="flex items-center border-none group"
+              >
                 <DeleteIcon
                   className="mr-2 h-5 w-5 text-white  stroke-blue-400 group-hover:stroke-white
  "
@@ -101,10 +99,7 @@ export function Item({ user, post }) {
             </CustemMenu>
             <Modal {...modalOptions}>{content}</Modal>
             <Modal {...sharemodalOptions}>
-              <ShareForm
-                close={sharemodalOptions.close}
-                post={post}
-              />
+              <ShareForm close={sharemodalOptions.close} post={post} />
             </Modal>
           </>
         )}

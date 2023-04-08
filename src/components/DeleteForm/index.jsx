@@ -4,7 +4,7 @@ import { Button, Error, Loading, Modal, Success } from "../../components";
 import { useFetch, useToggle } from "../../hooks";
 import { API } from "../../util";
 
-export function DeleteForm({ close, post }) {
+export function DeleteForm({ close, post, CONTROLS }) {
   const { isLoading, usefetch } = useFetch();
 
   const modalOptions = useToggle();
@@ -16,6 +16,7 @@ export function DeleteForm({ close, post }) {
     if (result.response.status == "failed") {
       setContent(<Error message={result.response.message} />);
     } else {
+      // setTimeout(() => CONTROLS.REMOVE_POST(post._id));
       setContent(
         <Success title="Delete Post" message={result.response.message} />
       );
