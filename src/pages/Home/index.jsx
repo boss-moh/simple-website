@@ -42,12 +42,19 @@ const reducerPost = function (state, action) {
       console.log("text", text, "image", image);
       return { ...state };
     }
+    case "SEARCH": {
+      return { ...state, searchTerm: action.payLoad };
+    }
+    default: {
+      return state;
+    }
   }
 };
 
 export function Home() {
   const [state, dispacth] = useReducer(reducerPost, {
     posts: [],
+    searchTerm: "",
   });
   const navigate = useNavigate();
 
@@ -94,11 +101,11 @@ export function Home() {
         },
       });
     },
+    SEARCH: (searchTerm) => dispacth({ type: "SEARCH", payLoad: searchTerm }),
   };
 
-  const [search, setSearch] = useState("");
   const searchPosts = state.posts.filter((post) =>
-    (post.text || "").toUpperCase().includes(search?.toUpperCase())
+    (post.text || "").toUpperCase().includes(state.searchTerm?.toUpperCase())
   );
 
   function handleLogout() {
@@ -121,45 +128,51 @@ export function Home() {
 
         <Input
           className="w-full sm:w-fit sm:flex-grow"
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => CONTROLS.SEARCH(e.target.value)}
           endIcon={<SearchIcon className="w-4 h-4 fill-slate-400" />}
         />
       </header>
 
-      <main className="my-auto ">
-        <List
-          user={user}
-          onAddPost={optionsModal.open}
-          list={searchPosts || []}
-          isLoading={isLoading}
-          hasPosts={state.posts.length}
-          search={search}
-          CONTROLS={CONTROLS}
-        />
-        <div className="flex justify-center items-center">
-          <ButtonIcon>
-            <ArrowIcon className="w-4 h-4 stroke-blue-500" />
-          </ButtonIcon>
-          <span>
-            {start} / {total}
-          </span>
-          <ButtonIcon>
-            <ArrowIcon className="w-4 h-4 rotate-180  stroke-blue-500" />
-          </ButtonIcon>
-        </div>
-        <Modal {...optionsModal}>
-          <AddForm close={optionsModal.close} CONTROLS={CONTROLS} />
-        </Modal>
-      </main>
-      <div className="fixed bottom-10 right-0   ">
-        <Button
-          onClick={handleLogout}
-          className="bg-gray-300 hover:bg-gray-300 transition-all w-fit h-fit   rounded-l-full group !pl-4 "
-        >
-          <DoorIcon className="text-white fill-white w-16 group-hover:hidden" />
-          <OpenDoorIcon className="text-white fill-white  w-16 hidden group-hover:block" />
-        </Button>
-      </div>
+      {isError ? (
+        <div>Some Error happer</div>
+      ) : (
+        <>
+          <main className="my-auto ">
+            <List
+              user={user}
+              onAddPost={optionsModal.open}
+              list={searchPosts || []}
+              isLoading={isLoading}
+              hasPosts={state.posts.length}
+              search={state.searchTerm}
+              CONTROLS={CONTROLS}
+            />
+            <div className="flex justify-center items-center">
+              <ButtonIcon>
+                <ArrowIcon className="w-4 h-4 stroke-blue-500" />
+              </ButtonIcon>
+              <span>
+                {start} / {total}
+              </span>
+              <ButtonIcon>
+                <ArrowIcon className="w-4 h-4 rotate-180  stroke-blue-500" />
+              </ButtonIcon>
+            </div>
+            <Modal {...optionsModal}>
+              <AddForm close={optionsModal.close} CONTROLS={CONTROLS} />
+            </Modal>
+          </main>
+          <div className="fixed bottom-10 right-0   ">
+            <Button
+              onClick={handleLogout}
+              className="bg-gray-300 hover:bg-gray-300 transition-all w-fit h-fit   rounded-l-full group !pl-4 "
+            >
+              <DoorIcon className="text-white fill-white w-16 group-hover:hidden" />
+              <OpenDoorIcon className="text-white fill-white  w-16 hidden group-hover:block" />
+            </Button>
+          </div>
+        </>
+      )}
     </Page>
   );
 }

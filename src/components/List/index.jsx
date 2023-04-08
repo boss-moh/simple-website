@@ -27,10 +27,12 @@ export function List({
             <Skeleton key={item} className="h-[100px] mb-2 rounded-sm" />
           ))
         ) : !list.length ? (
-          <div className=" flex flex-col capitalize gap-2 items-center">
+          <div className=" flex flex-col  gap-2 items-center">
             {hasPosts ? (
               <>
-                <span>you don't have any post start with</span>
+                <span className="capitalize">
+                  you don't have any post start with
+                </span>
                 <span>({search})</span>
               </>
             ) : (
