@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API, Auth } from "../../util";
 import {
@@ -20,7 +20,21 @@ import {
 } from "../../images";
 import { useFetch, useToggle } from "../../hooks";
 
+const reducerPost = function (state, action) {
+  switch (action.type) {
+    case "ADD": {
+      return { ...state, posts: [action.payLoad, ...state.posts] };
+    }
+    case "SET_LIST": {
+      return { ...state, posts: action.payLoad };
+    }
+  }
+};
+
 export function Home() {
+  const [state, dispacth] = useReducer(reducerPost, {
+    posts: [],
+  });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,14 +47,34 @@ export function Home() {
 
   const user = Auth.getUser();
 
-  const { data: response, isError, isLoading, usefetch } = useFetch();
+  const { isError, isLoading, usefetch } = useFetch();
   useEffect(() => {
-    usefetch(API.getPosts("0"));
+    usefetch(API.getPosts("0")).then((data) => {
+      console.log("data.response", data.response);
+      dispacth({ type: "SET_LIST", payLoad: data.response.data?.posts || [] });
+    });
   }, []);
 
+  console.log(state);
+
+  const CONTROLS = {
+    // ADD_POST: handleAddPost,
+    ADD_POST: (id, text, image) => {
+      dispacth({
+        type: "ADD",
+        payLoad: {
+          _id: id,
+          user: Auth.getUser().data,
+          text,
+          image,
+        },
+      });
+    },
+  };
+
   const [search, setSearch] = useState("");
-  const searchPosts = response.data?.posts.filter((post) =>
-    post?.text?.toUpperCase().includes(search?.toUpperCase())
+  const searchPosts = state.posts.filter((post) =>
+    (post.text || "").toUpperCase().includes(search?.toUpperCase())
   );
 
   function handleLogout() {
@@ -74,7 +108,7 @@ export function Home() {
           onAddPost={optionsModal.open}
           list={searchPosts || []}
           isLoading={isLoading}
-          hasPosts={response.data?.posts.length}
+          hasPosts={state.posts.length}
           search={search}
         />
         <div className="flex justify-center items-center">
@@ -89,13 +123,14 @@ export function Home() {
           </ButtonIcon>
         </div>
         <Modal {...optionsModal}>
-          <AddForm close={optionsModal.close} />
+          <AddForm close={optionsModal.close} controls={CONTROLS} />
         </Modal>
       </main>
       <div className="fixed bottom-10 right-0   ">
         <Button
           onClick={handleLogout}
-          className="bg-gray-300 hover:bg-gray-300 transition-all w-fit h-fit   rounded-l-full group !pl-4 ">
+          className="bg-gray-300 hover:bg-gray-300 transition-all w-fit h-fit   rounded-l-full group !pl-4 "
+        >
           <DoorIcon className="text-white fill-white w-16 group-hover:hidden" />
           <OpenDoorIcon className="text-white fill-white  w-16 hidden group-hover:block" />
         </Button>

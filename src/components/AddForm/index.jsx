@@ -10,9 +10,9 @@ import {
   Loading,
 } from "../../components";
 import { useFetch, useToggle } from "../../hooks";
-import { API, VAILTIOND_FORM } from "../../util";
+import { API, VAILTIOND_FORM, getID } from "../../util";
 
-export function AddForm({ close }) {
+export function AddForm({ close, controls }) {
   const {
     register,
     handleSubmit,
@@ -32,6 +32,7 @@ export function AddForm({ close }) {
     formData.append("image", data.image[0]);
     return formData;
   }
+
   async function onSubmit() {
     const dataRequest = prepareData(getValues());
     const result = await usefetch(
@@ -43,6 +44,8 @@ export function AddForm({ close }) {
     if (result.response.status == "failed") {
       setContent(<Error message={result.response.message} />);
     } else {
+      const ID = result.response?.data?.id || getID();
+      controls.ADD_POST(ID, getValues().text, handleGetSrcImage());
       setContent(
         <Success title="Added Post" message={result.response.message} />
       );
@@ -75,7 +78,10 @@ export function AddForm({ close }) {
             Cancel
           </Button>
 
-          <Button theme="second" className="group">
+          <Button
+            theme="second"
+            className=" flex justify-center items-center group"
+          >
             {isLoading ? (
               <Loading className=" stroke-blue-500 group-hover:stroke-white" />
             ) : (

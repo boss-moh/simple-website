@@ -17,7 +17,7 @@ export function DeleteForm({ close, post }) {
       setContent(<Error message={result.response.message} />);
     } else {
       setContent(
-        <Success title="Added Post" message={result.response.message} />
+        <Success title="Delete Post" message={result.response.message} />
       );
     }
     modalOptions.open();
@@ -37,7 +37,11 @@ export function DeleteForm({ close, post }) {
         <Button theme="second" onClick={close}>
           No
         </Button>
-        <Button theme="delete" onClick={deleteRequest}>
+        <Button
+          className="flex justify-center items-center"
+          theme="delete"
+          onClick={deleteRequest}
+        >
           {isLoading ? (
             <Loading className="stroke-white">Deleting . . .</Loading>
           ) : (

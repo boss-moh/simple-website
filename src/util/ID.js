@@ -1,5 +1,5 @@
 export function getID() {
-  return Date.now();
+  return `random ${Date.now()}`;
 }
 
 export default getID;

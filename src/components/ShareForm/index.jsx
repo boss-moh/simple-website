@@ -50,8 +50,8 @@ export function ShareForm({ post, close }) {
         <Input
           label="email"
           {...register("email", VAILTIOND_FORM.EMAIL)}
-          error={errors?.text}
-          helperText={errors?.text?.message}
+          error={errors?.email}
+          helperText={errors?.email?.message}
         />
         <Radio
           {...register("view")}
@@ -71,7 +71,11 @@ export function ShareForm({ post, close }) {
             {isLoading ? "Close" : "Cancel"}
           </Button>
 
-          <Button theme="second" className=" group" type="submit">
+          <Button
+            theme="second"
+            className="flex justify-center items-center group"
+            type="submit"
+          >
             {isLoading ? (
               <>
                 <Loading className=" stroke-blue-500 group-hover:stroke-white" />

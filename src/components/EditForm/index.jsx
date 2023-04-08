@@ -90,7 +90,10 @@ export function EditForm({ post, close }) {
           <Button onClick={close} type="button">
             Cancel
           </Button>
-          <Button theme="second" className=" group ">
+          <Button
+            theme="second"
+            className="flex justify-center items-center group "
+          >
             {isLoading ? (
               <Loading className=" stroke-blue-500 group-hover:stroke-white" />
             ) : (
