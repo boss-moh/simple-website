@@ -4,29 +4,29 @@ import { Button, Error, Loading, Modal, Success } from "../../components";
 import { useFetch, useToggle } from "../../hooks";
 import { API } from "../../util";
 
-export function DeleteForm({ close, post, CONTROLS }) {
+export function DeleteForm({ close, id, CONTROLS }) {
   const { isLoading, usefetch } = useFetch();
 
-  const modalOptions = useToggle();
+  const modalSettnigs = useToggle();
   const [content, setContent] = useState(null);
 
   async function deleteRequest() {
-    const result = await usefetch(API.deletePost(post._id), "DELETE");
+    const result = await usefetch(API.deletePost(id), "DELETE");
 
     if (result.response.status == "failed") {
       setContent(<Error message={result.response.message} />);
     } else {
-      // setTimeout(() => CONTROLS.REMOVE_POST(post._id));
+      CONTROLS.REMOVE_POST(id);
       setContent(
         <Success title="Delete Post" message={result.response.message} />
       );
     }
-    modalOptions.open();
+    modalSettnigs.open();
   }
 
   function handleCloseAfterSubmit() {
     close();
-    modalOptions.close();
+    modalSettnigs.close();
   }
 
   return (
@@ -39,7 +39,7 @@ export function DeleteForm({ close, post, CONTROLS }) {
           No
         </Button>
         <Button
-          className="flex justify-center items-center"
+          className="flex justify-center items-center whitespace-nowrap"
           theme="delete"
           onClick={deleteRequest}
         >
@@ -50,7 +50,7 @@ export function DeleteForm({ close, post, CONTROLS }) {
           )}
         </Button>
       </div>
-      <Modal {...modalOptions} close={handleCloseAfterSubmit}>
+      <Modal {...modalSettnigs} close={handleCloseAfterSubmit}>
         {content}
       </Modal>
     </div>

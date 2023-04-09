@@ -13,21 +13,15 @@ import { useFetch, useToggle } from "../../hooks";
 import { API } from "../../util";
 
 export function EditForm({ post, close, CONTROLS }) {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    getValues,
-    watch,
-  } = useForm({
+  const { register, handleSubmit, getValues, watch } = useForm({
     defaultValues: {
-      text: post.text,
-      image: post.image || null,
+      text: post?.text,
+      image: post?.image || null,
     },
   });
 
   watch("image");
-  const modalOptions = useToggle();
+  const modalSettnigs = useToggle();
   const [content, setContent] = useState(null);
   const { isLoading, usefetch } = useFetch();
 
@@ -58,12 +52,12 @@ export function EditForm({ post, close, CONTROLS }) {
         <Success title="Edit Post" message={result.response.message} />
       );
     }
-    modalOptions.open();
+    modalSettnigs.open();
   }
 
   function handleCloseAfterSubmit() {
     close();
-    modalOptions.close();
+    modalSettnigs.close();
   }
 
   function handleGetSrcImage() {
@@ -98,7 +92,7 @@ export function EditForm({ post, close, CONTROLS }) {
           </Button>
         </div>
       </form>
-      <Modal {...modalOptions} close={handleCloseAfterSubmit}>
+      <Modal {...modalSettnigs} close={handleCloseAfterSubmit}>
         {content}
       </Modal>
     </>

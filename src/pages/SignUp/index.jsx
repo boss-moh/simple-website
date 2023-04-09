@@ -32,7 +32,7 @@ export function SignUp() {
 
   const { isLoading, usefetch } = useFetch();
 
-  const modalOptions = useToggle();
+  const modalSettnigs = useToggle();
   const [content, setContent] = useState(null);
 
   async function onSubmit() {
@@ -60,7 +60,7 @@ export function SignUp() {
         </>
       );
     }
-    modalOptions.open();
+    modalSettnigs.open();
   }
 
   return (
@@ -103,7 +103,7 @@ export function SignUp() {
           </p>
         </div>
       </form>
-      <Modal {...modalOptions}>{content}</Modal>
+      <Modal {...modalSettnigs}>{content}</Modal>
     </Page>
   );
 }

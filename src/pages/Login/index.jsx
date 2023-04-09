@@ -32,7 +32,7 @@ export function Login() {
 
   const { isLoading, usefetch } = useFetch();
 
-  const modalOptions = useToggle();
+  const modalSettnigs = useToggle();
   const [content, setContent] = useState(null);
 
   async function onSubmit() {
@@ -59,7 +59,7 @@ export function Login() {
         </>
       );
     }
-    modalOptions.open();
+    modalSettnigs.open();
   }
   return (
     <Page className="flex flex-col gap-5  !max-w-[400px] m-auto">
@@ -96,7 +96,7 @@ export function Login() {
           </p>
         </div>
       </form>
-      <Modal {...modalOptions}>{content}</Modal>
+      <Modal {...modalSettnigs}>{content}</Modal>
     </Page>
   );
 }

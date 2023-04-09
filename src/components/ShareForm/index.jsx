@@ -21,7 +21,7 @@ export function ShareForm({ post, close }) {
     watch,
   } = useForm();
 
-  const modalOptions = useToggle();
+  const modalSettnigs = useToggle();
   const [content, setContent] = useState(null);
   const { isLoading, usefetch } = useFetch();
 
@@ -35,12 +35,12 @@ export function ShareForm({ post, close }) {
         <Success title="Share Post" message={result.response.message} />
       );
     }
-    modalOptions.open();
+    modalSettnigs.open();
   }
 
   function handleCloseAfterSubmit() {
     close();
-    modalOptions.close();
+    modalSettnigs.close();
   }
 
   return (
@@ -86,7 +86,7 @@ export function ShareForm({ post, close }) {
           </Button>
         </div>
       </form>
-      <Modal {...modalOptions} close={handleCloseAfterSubmit}>
+      <Modal {...modalSettnigs} close={handleCloseAfterSubmit}>
         {content}
       </Modal>
     </>

@@ -11,7 +11,8 @@ export function List({
   isLoading,
   hasPosts = false,
   search,
-  CONTROLS,
+  modalsSettings,
+  setPost,
 }) {
   return (
     <div className={` border  p-2 ${className}`}>
@@ -49,7 +50,8 @@ export function List({
                 user={user}
                 post={post}
                 key={post._id}
-                CONTROLS={CONTROLS}
+                modalsSettings={modalsSettings}
+                setPost={setPost}
               />
             ))}
           </div>

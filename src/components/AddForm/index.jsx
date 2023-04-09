@@ -22,7 +22,7 @@ export function AddForm({ close, CONTROLS }) {
   } = useForm();
   watch("image");
 
-  const modalOptions = useToggle();
+  const modalSettnigs = useToggle();
   const [content, setContent] = useState(null);
   const { isLoading, usefetch } = useFetch();
 
@@ -50,12 +50,12 @@ export function AddForm({ close, CONTROLS }) {
         <Success title="Added Post" message={result.response.message} />
       );
     }
-    modalOptions.open();
+    modalSettnigs.open();
   }
 
   function handleCloseAfterSubmit() {
     close();
-    modalOptions.close();
+    modalSettnigs.close();
   }
 
   function handleGetSrcImage() {
@@ -90,7 +90,7 @@ export function AddForm({ close, CONTROLS }) {
           </Button>
         </div>
       </form>
-      <Modal {...modalOptions} close={handleCloseAfterSubmit}>
+      <Modal {...modalSettnigs} close={handleCloseAfterSubmit}>
         {content}
       </Modal>
     </>

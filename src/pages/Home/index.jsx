@@ -9,6 +9,8 @@ import {
   Button,
   Modal,
   ButtonIcon,
+  EditForm,
+  DeleteForm,
 } from "../../components";
 import {
   ArrowIcon,
@@ -19,6 +21,7 @@ import {
   SearchIcon,
 } from "../../images";
 import { useFetch, useToggle } from "../../hooks";
+import ShareForm from "../../components/ShareForm";
 
 const reducerPost = function (state, action) {
   switch (action.type) {
@@ -39,7 +42,6 @@ const reducerPost = function (state, action) {
       const postIndex = state.posts.findIndex((post) => post._id == id);
       text && (state.posts[postIndex].text = text);
       image && (state.posts[postIndex].image = image);
-      console.log("text", text, "image", image);
       return { ...state };
     }
     case "SEARCH": {
@@ -56,6 +58,7 @@ export function Home() {
     posts: [],
     searchTerm: "",
   });
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -64,19 +67,19 @@ export function Home() {
     }
   }, []);
 
-  const optionsModal = useToggle();
+  function handleLogout() {
+    Auth.logOut();
+    navigate("/login");
+  }
 
   const user = Auth.getUser();
 
   const { isError, isLoading, usefetch } = useFetch();
   useEffect(() => {
     usefetch(API.getPosts("0")).then((data) => {
-      console.log("data.response", data.response);
       dispacth({ type: "SET_LIST", payLoad: data.response.data?.posts || [] });
     });
   }, []);
-
-  console.log(state);
 
   const CONTROLS = {
     ADD_POST: (id, text, image) => {
@@ -108,16 +111,22 @@ export function Home() {
     (post.text || "").toUpperCase().includes(state.searchTerm?.toUpperCase())
   );
 
-  function handleLogout() {
-    Auth.logOut();
-    navigate("/login");
-  }
+  const [post, setPost] = useState(null);
 
-  const start = 4;
-  const total = 4;
+  const editModalSettings = useToggle();
+  const deleteModalSettings = useToggle();
+  const shareModalSettings = useToggle();
+  const addModalSettings = useToggle();
+
+  const modalsSettings = {
+    edit: { ...editModalSettings },
+    delete: { ...deleteModalSettings },
+    share: { ...shareModalSettings },
+    add: { ...addModalSettings },
+  };
 
   return (
-    <Page className="sm:p-6">
+    <Page className="sm:p-6 !pb-8">
       <header className=" mb-10 flex flex-wrap  justify-between  gap-4  items-center  sm:flex-row   ">
         <Logo className="w-16 h-16  sm:w-10 sm:h-10 " />
 
@@ -140,28 +149,16 @@ export function Home() {
           <main className="my-auto ">
             <List
               user={user}
-              onAddPost={optionsModal.open}
+              onAddPost={addModalSettings.open}
               list={searchPosts || []}
               isLoading={isLoading}
               hasPosts={state.posts.length}
               search={state.searchTerm}
-              CONTROLS={CONTROLS}
+              modalsSettings={modalsSettings}
+              setPost={setPost}
             />
-            <div className="flex justify-center items-center">
-              <ButtonIcon>
-                <ArrowIcon className="w-4 h-4 stroke-blue-500" />
-              </ButtonIcon>
-              <span>
-                {start} / {total}
-              </span>
-              <ButtonIcon>
-                <ArrowIcon className="w-4 h-4 rotate-180  stroke-blue-500" />
-              </ButtonIcon>
-            </div>
-            <Modal {...optionsModal}>
-              <AddForm close={optionsModal.close} CONTROLS={CONTROLS} />
-            </Modal>
           </main>
+
           <div className="fixed bottom-10 right-0   ">
             <Button
               onClick={handleLogout}
@@ -171,6 +168,30 @@ export function Home() {
               <OpenDoorIcon className="text-white fill-white  w-16 hidden group-hover:block" />
             </Button>
           </div>
+
+          <Modal {...editModalSettings}>
+            <EditForm
+              close={editModalSettings.close}
+              CONTROLS={CONTROLS}
+              post={post}
+            />
+          </Modal>
+
+          <Modal {...deleteModalSettings}>
+            <DeleteForm
+              id={post?._id}
+              close={deleteModalSettings.close}
+              CONTROLS={CONTROLS}
+            />
+          </Modal>
+
+          <Modal {...shareModalSettings}>
+            <ShareForm close={shareModalSettings.close} post={post} />
+          </Modal>
+
+          <Modal {...addModalSettings}>
+            <AddForm close={addModalSettings.close} CONTROLS={CONTROLS} />
+          </Modal>
         </>
       )}
     </Page>

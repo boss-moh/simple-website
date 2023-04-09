@@ -21,7 +21,6 @@ export function useFetch() {
     };
 
     method !== "GET" && (options.body = data);
-    console.log(options);
 
     let tempObject = {};
     try {
