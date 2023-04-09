@@ -1,6 +1,6 @@
 import React from "react";
 import { PlusIcon } from "../../images";
-import { Loading, ButtonIcon, Button, Skeleton } from "../../components";
+import { ButtonIcon, Button, Skeleton } from "../../components";
 import { Item } from "./Item";
 
 export function List({
