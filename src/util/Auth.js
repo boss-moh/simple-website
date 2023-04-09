@@ -11,7 +11,7 @@ function isLogin() {
 }
 
 function getToken() {
-  return getUser()?.accessToken || "";
+  return `Bearer ${getUser()?.accessToken || ""}`;
 }
 function logOut() {
   localStorage.removeItem("user");
