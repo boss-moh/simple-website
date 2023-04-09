@@ -119,10 +119,10 @@ export function Home() {
   const addModalSettings = useToggle();
 
   const modalsSettings = {
-    edit: { ...editModalSettings },
-    delete: { ...deleteModalSettings },
-    share: { ...shareModalSettings },
-    add: { ...addModalSettings },
+    edit: editModalSettings,
+    delete: deleteModalSettings,
+    share: shareModalSettings,
+    add: addModalSettings,
   };
 
   return (
