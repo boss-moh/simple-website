@@ -81,6 +81,8 @@ export function Login() {
           error={errors?.email}
           helperText={errors?.email?.message}
         />
+        <span>"test@test.com" For Testing</span>
+
         <div className="mt-2 flex flex-col gap-5 items-center">
           <Button className="flex justify-center items-center">
             {isLoading ? <Loading className="stroke-white" /> : "Login"}
