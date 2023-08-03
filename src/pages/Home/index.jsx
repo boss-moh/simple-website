@@ -22,6 +22,7 @@ import {
 } from "../../images";
 import { useFetch, useToggle } from "../../hooks";
 import ShareForm from "../../components/ShareForm";
+import usePaint from "../../hooks/usePaint";
 
 const reducerPost = function (state, action) {
   switch (action.type) {
@@ -76,7 +77,7 @@ export function Home() {
 
   const { isError, isLoading, usefetch } = useFetch();
   useEffect(() => {
-    usefetch(API.getPosts("0")).then((data) => {
+    usefetch(API.getPosts(0, 100)).then((data) => {
       dispacth({ type: "SET_LIST", payLoad: data.response.data?.posts || [] });
     });
   }, []);
@@ -125,6 +126,15 @@ export function Home() {
     add: addModalSettings,
   };
 
+  const step = 2;
+
+  const { index, total, increment, decrement } = usePaint(
+    0,
+    step,
+    state.posts.length
+  );
+
+  const stepListing = state.posts.slice(index, index + step);
   return (
     <Page className="sm:p-6 !pb-8">
       <header className=" mb-10 flex flex-wrap  justify-between  gap-4  items-center  sm:flex-row   ">
@@ -150,15 +160,27 @@ export function Home() {
             <List
               user={user}
               onAddPost={addModalSettings.open}
-              list={searchPosts || []}
+              list={stepListing}
               isLoading={isLoading}
               hasPosts={state.posts.length}
               search={state.searchTerm}
               modalsSettings={modalsSettings}
               setPost={setPost}
+              step={step}
             />
           </main>
 
+          <div className="flex justify-center items-center">
+            <ButtonIcon onClick={decrement}>
+              <ArrowIcon className="w-4 h-4 stroke-blue-500" />
+            </ButtonIcon>
+            <span>
+              {index + 1} / {total}
+            </span>
+            <ButtonIcon onClick={increment}>
+              <ArrowIcon className="w-4 h-4 rotate-180  stroke-blue-500" />
+            </ButtonIcon>
+          </div>
           <div className="fixed bottom-10 right-0   ">
             <Button
               onClick={handleLogout}
